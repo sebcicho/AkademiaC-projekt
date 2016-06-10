@@ -21,6 +21,13 @@ namespace Tank
             health = hp;
         }
 
+        public Trash(MainWindow win, int hp,int x, int y)
+        {
+            main = win;
+            health = hp;
+            xGridPosition = x;
+            yGridPosition = y;
+        }
         public void Draw()
         {
 

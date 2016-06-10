@@ -12,6 +12,9 @@ namespace Tank
     {
         private int xPosition;
         private int yPosition;
+
+        public int xGridPosition;
+        public int yGridPosition;
         public int health;
         public Obstackle()
         {

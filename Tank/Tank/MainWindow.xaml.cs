@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace Tank
 {
@@ -30,9 +31,8 @@ namespace Tank
         private int tankSpeed = 10;
         private int ticPrescaler = 0;
         private int ticMultiplier = 2;
-        private obstacleTypeAndIndicator obs;
 
-        private List<List<List<obstacleTypeAndIndicator>>> obstacles = new List<List<List<obstacleTypeAndIndicator>>>();
+        private List<List<List<int>>> obstacles = new List<List<List<int>>>();
         private List<List<List<Trash>>> trashes = new List<List<List<Trash>>>();
         private List<List<List<EnemyTank>>> tanks = new List<List<List<EnemyTank>>>();
         private List<List<List<Bunker>>> bunkers = new List<List<List<Bunker>>>();
@@ -48,6 +48,8 @@ namespace Tank
         public static int gridWidth = 9;
         public static int levelNumber = 5;
 
+        public static int obstaclesFirstHeighOffset = 455;
+        public static int obstaclesWidthOffset = 10;
 
         private enum obstaclesTypes
         {
@@ -70,7 +72,8 @@ namespace Tank
             InitializeComponent();
             LevelInit(levelNumber);
 
-            LevelDraw(3);
+            LevelDraw(4);
+            gameParams.level = 5;
             //------------------------------------------------------
             PlayerTankObject.DataContext = playerTank;
             Level.DataContext = gameParams;
@@ -103,23 +106,7 @@ namespace Tank
                 }
             }
 
-            if (playerTank.shootFired == true)
-            {
-
-                if (playerTank.YShootPosition == playerTankEndPosition)
-                {
-                    playerTank.XShootPosition = playerTank.XPosition + cannonOffset;
-                    playerTank.ShootVisible = 100;
-                }
-                playerTank.YShootPosition += ammoVelocity;
-                if (playerTank.YShootPosition == playerShotRange)
-                {
-                    playerTank.shootFired = false;
-                    playerTank.XShootPosition = 0;
-                    playerTank.YShootPosition = playerTankEndPosition;
-                    playerTank.ShootVisible = 0;
-                }
-            }
+            playerShoot();
 
         }
 
@@ -149,7 +136,7 @@ namespace Tank
 
                 trashes.Add(new List<List<Trash>>());
                 tanks.Add(new List<List<EnemyTank>>());
-                obstacles.Add(new List<List<obstacleTypeAndIndicator>>());
+                obstacles.Add(new List<List<int>>());
                 bunkers.Add(new List<List<Bunker>>());
                 towers.Add(new List<List<Tower>>());
                 checkSum = 0;
@@ -158,7 +145,7 @@ namespace Tank
                 {
                     trashes[i].Add(new List<Trash>());
                     tanks[i].Add(new List<EnemyTank>());
-                    obstacles[i].Add(new List<obstacleTypeAndIndicator>());
+                    obstacles[i].Add(new List<int>());
                     bunkers[i].Add(new List<Bunker>());
                     towers[i].Add(new List<Tower>());
 
@@ -169,111 +156,114 @@ namespace Tank
                             case 0:
                                 if (j % 2 == 0)
                                 {
-                                    obstacles[i][j].Add(new obstacleTypeAndIndicator(rnd.Next(0, 2), 0));
-                                    if (obstacles[i][j][obstacles[i][j].Count - 1].type != 0)
-                                    {
+                                    obstacles[i][j].Add(rnd.Next(0, 2));
+                                    if (obstacles[i][j][obstacles[i][j].Count - 1] != (int)obstaclesTypes.noObstacle)
                                         checkSum++;
-                                        obstacles[i][j][obstacles[i][j].Count - 1].sum = checkSum;
-                                    }
                                 }
                                 else
-                                    obstacles[i][j].Add(new obstacleTypeAndIndicator(0, 0));
+                                    obstacles[i][j].Add(0);
                                 break;
                             case 1:
                                 if (j % 2 == 0)
                                 {
-                                    obstacles[i][j].Add(new obstacleTypeAndIndicator(rnd.Next(0, 3), 0));
-                                    if (obstacles[i][j][obstacles[i][j].Count - 1].type != 0)
-                                    {
+                                    obstacles[i][j].Add(rnd.Next(0, 3));
+                                    if (obstacles[i][j][obstacles[i][j].Count - 1] != (int)obstaclesTypes.noObstacle)
                                         checkSum++;
-                                        obstacles[i][j][obstacles[i][j].Count - 1].sum = checkSum;
-                                    }
                                 }
                                 else
-                                    obstacles[i][j].Add(new obstacleTypeAndIndicator(0, 0));
+                                    obstacles[i][j].Add(0);
                                 break;
                             case 2:
                                 if (j % 2 == 0)
                                 {
-                                    obstacles[i][j].Add(new obstacleTypeAndIndicator(rnd.Next(0, 4), 0));
-                                    if (obstacles[i][j][obstacles[i][j].Count - 1].type != 0)
-                                    {
+                                    obstacles[i][j].Add(rnd.Next(0, 4));
+                                    if (obstacles[i][j][obstacles[i][j].Count - 1] != (int)obstaclesTypes.noObstacle)
                                         checkSum++;
-                                        obstacles[i][j][obstacles[i][j].Count - 1].sum = checkSum;
-                                    }
                                 }
                                 else
-                                    obstacles[i][j].Add(new obstacleTypeAndIndicator(0, 0));
+                                    obstacles[i][j].Add(0);
                                 break;
                             case 3:
                                 if (j % 2 == 0)
                                 {
-                                    obstacles[i][j].Add(new obstacleTypeAndIndicator(rnd.Next(0, 5), 0));
-                                    if (obstacles[i][j][obstacles[i][j].Count - 1].type != 0)
-                                    {
+                                    obstacles[i][j].Add(rnd.Next(0, 5));
+                                    if (obstacles[i][j][obstacles[i][j].Count - 1] != (int)obstaclesTypes.noObstacle)
                                         checkSum++;
-                                        obstacles[i][j][obstacles[i][j].Count - 1].sum = checkSum;
-                                    }
                                 }
                                 else
-                                    obstacles[i][j].Add(new obstacleTypeAndIndicator(0, 0));
+                                    obstacles[i][j].Add(0);
                                 break;
                             default:
-                                obstacles[i][j].Add(new obstacleTypeAndIndicator(rnd.Next(0, 5), 0));
-                                if (obstacles[i][j][obstacles[i][j].Count - 1].type != 0)
-                                {
+                                obstacles[i][j].Add(rnd.Next(0, 5));
+                                if (obstacles[i][j][obstacles[i][j].Count - 1] != (int)obstaclesTypes.noObstacle)
                                     checkSum++;
-                                    obstacles[i][j][obstacles[i][j].Count - 1].sum = checkSum;
-                                }
                                 break;
                         }
+
                     }
                     if (checkSum == 0)
-                        obstacles[i][j][0].type = 1;
+                        obstacles[i][j][0] = 1;
                 }
             }
         }
         private void LevelDraw(int level)
         {
-
             for (int j = 0; j < obstacles[level].Count; j++)
             {
                 for (int k = 0; k < obstacles[level][j].Count; k++)
                 {
-
-
-                    switch (obstacles[level][j][k].type)
+                    switch (obstacles[level][j][k])
                     {
                         case (int)obstaclesTypes.noObstacle:
                             //do nothing
+                            tanks[level][j].Add(new EnemyTank(this, 0, j, k));
+                            bunkers[level][j].Add(new Bunker(this, 0, j, k));
+                            towers[level][j].Add(new Tower(this, 0, j, k));
+                            trashes[level][j].Add(new Trash(this, 0, j, k));
                             break;
                         case (int)obstaclesTypes.trash:
                             //draw a trash
-                            trashes[level][j].Add(new Trash(this, (int)obstackleHealthPoints.trash));
-                            trashes[level][j][trashes[level][j].Count - 1].XPosition = (j * 60) + 10;
-                            trashes[level][j][trashes[level][j].Count - 1].YPosition = (k * 60) + 10;
+                            trashes[level][j].Add(new Trash(this, (int)obstackleHealthPoints.trash, j, k));
+                            trashes[level][j][trashes[level][j].Count - 1].XPosition = (j * 60 + 10);
+                            trashes[level][j][trashes[level][j].Count - 1].YPosition = (k * 60 + 10);
                             trashes[level][j][trashes[level][j].Count - 1].Draw();
+
+                            tanks[level][j].Add(new EnemyTank(this, 0, j, k));
+                            bunkers[level][j].Add(new Bunker(this, 0, j, k));
+                            towers[level][j].Add(new Tower(this, 0, j, k));
                             break;
                         case (int)obstaclesTypes.tank:
                             //draw a tank
-                            tanks[level][j].Add(new EnemyTank(this, (int)obstackleHealthPoints.tankAndTower));
-                            tanks[level][j][tanks[level][j].Count - 1].XPosition = (j * 60) + 10;
-                            tanks[level][j][tanks[level][j].Count - 1].YPosition = (k * 60) + 10;
+                            tanks[level][j].Add(new EnemyTank(this, (int)obstackleHealthPoints.tankAndTower, j, k));
+                            tanks[level][j][tanks[level][j].Count - 1].XPosition = (j * 60 + 10);
+                            tanks[level][j][tanks[level][j].Count - 1].YPosition = (k * 60 + 10);
                             tanks[level][j][tanks[level][j].Count - 1].Draw();
+
+                            trashes[level][j].Add(new Trash(this, 0, j, k));
+                            bunkers[level][j].Add(new Bunker(this, 0, j, k));
+                            towers[level][j].Add(new Tower(this, 0, j, k));
                             break;
                         case (int)obstaclesTypes.bunker:
                             //draw a bunker
-                            bunkers[level][j].Add(new Bunker(this,  (int)obstackleHealthPoints.bunker));
-                            bunkers[level][j][bunkers[level][j].Count - 1].XPosition = (j * 60) + 10;
-                            bunkers[level][j][bunkers[level][j].Count - 1].YPosition = (k * 60) + 10;
+                            bunkers[level][j].Add(new Bunker(this, (int)obstackleHealthPoints.bunker, j, k));
+                            bunkers[level][j][bunkers[level][j].Count - 1].XPosition = (j * 60 + 10);
+                            bunkers[level][j][bunkers[level][j].Count - 1].YPosition = (k * 60 + 10);
                             bunkers[level][j][bunkers[level][j].Count - 1].Draw();
+
+                            trashes[level][j].Add(new Trash(this, 0, j, k));
+                            tanks[level][j].Add(new EnemyTank(this, 0, j, k));
+                            towers[level][j].Add(new Tower(this, 0, j, k));
                             break;
                         case (int)obstaclesTypes.tower:
                             //draw a attackBuilding
-                            towers[level][j].Add(new Tower(this, (int)obstackleHealthPoints.tankAndTower));
-                            towers[level][j][towers[level][j].Count - 1].XPosition = (j * 60) + 10;
-                            towers[level][j][towers[level][j].Count - 1].YPosition = (k * 60) + 10;
+                            towers[level][j].Add(new Tower(this, (int)obstackleHealthPoints.tankAndTower, j, k));
+                            towers[level][j][towers[level][j].Count - 1].XPosition = (j * 60 + 10);
+                            towers[level][j][towers[level][j].Count - 1].YPosition = (k * 60 + 10);
                             towers[level][j][towers[level][j].Count - 1].Draw();
+
+                            trashes[level][j].Add(new Trash(this, 0, j, k));
+                            tanks[level][j].Add(new EnemyTank(this, 0, j, k));
+                            bunkers[level][j].Add(new Bunker(this, 0, j, k));
                             break;
 
                     }
@@ -282,6 +272,170 @@ namespace Tank
 
         }
 
+        private void playerShoot()
+        {
+            bool hitX = false;
+            int yBoom = 0;
 
+            Rectangle blank = new Rectangle();
+            blank.Height = 60;
+            blank.Width = 60;
+            blank.Fill = new SolidColorBrush(Colors.Black);
+
+            if (playerTank.shootFired == true)
+            {
+
+                if (playerTank.YShootPosition == playerTankEndPosition)
+                {
+                    playerTank.XShootPosition = playerTank.XPosition + cannonOffset;
+                    playerTank.ShootVisible = 100;
+                }
+                playerTank.YShootPosition += ammoVelocity;
+
+
+                if (isHitOnX())
+                {
+                    yBoom = obstaclesFirstHeighOffset - (YGridPosition() * 60);
+                    //     Debug.WriteLine((YGridPosition() * 60 - 50).ToString());
+                    if (playerTank.YShootPosition >= yBoom)
+                    {
+                        //dziala tu jest wyjebywanie do napisania
+
+                        switch (obstacles[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()])
+                        {
+                            case (int)obstaclesTypes.trash:
+                                trashes[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()].health--;
+                                if (trashes[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()].health == 0)
+                                {
+                                    this.obstacleCanvas.Children.Add(blank);
+                                    Canvas.SetTop(blank, YGridPosition() * 60 + 10);
+                                    Canvas.SetLeft(blank, mapXPositionToGrid(playerTank.XShootPosition) * 60 + 10);
+                                    obstacles[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()] = 0;
+                                }
+                                break;
+                            case (int)obstaclesTypes.tank:
+                                tanks[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()].health--;
+                                if (tanks[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()].health == 0)
+                                {
+                                    this.obstacleCanvas.Children.Add(blank);
+                                    Canvas.SetTop(blank, YGridPosition() * 60 + 10);
+                                    Canvas.SetLeft(blank, mapXPositionToGrid(playerTank.XShootPosition) * 60 + 10);
+                                    obstacles[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()] = 0;
+                                }
+                                break;
+                            case (int)obstaclesTypes.bunker:
+                                bunkers[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()].health--;
+                                if (bunkers[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()].health == 0)
+                                {
+                                    this.obstacleCanvas.Children.Add(blank);
+                                    Canvas.SetTop(blank, YGridPosition() * 60 + 10);
+                                    Canvas.SetLeft(blank, mapXPositionToGrid(playerTank.XShootPosition) * 60 + 10);
+                                    obstacles[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()] = 0;
+                                }
+                                break;
+                            case (int)obstaclesTypes.tower:
+                                towers[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()].health--;
+                                if (towers[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()].health == 0)
+                                {
+                                    this.obstacleCanvas.Children.Add(blank);
+                                    Canvas.SetTop(blank, YGridPosition() * 60 + 10);
+                                    Canvas.SetLeft(blank, mapXPositionToGrid(playerTank.XShootPosition) * 60 + 10);
+                                    obstacles[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()] = 0;
+                                }
+                                break;
+
+
+
+
+                        }
+
+
+                        playerTank.shootFired = false;
+                        playerTank.XShootPosition = 0;
+                        playerTank.YShootPosition = playerTankEndPosition;
+                        playerTank.ShootVisible = 0;
+                    }
+                }
+
+                if (playerTank.YShootPosition == playerShotRange)
+                {
+                    playerTank.shootFired = false;
+                    playerTank.XShootPosition = 0;
+                    playerTank.YShootPosition = playerTankEndPosition;
+                    playerTank.ShootVisible = 0;
+                }
+            }
+        }
+
+        private int mapXPositionToGrid(int xpos)
+        {
+            int xgrid = 0;
+            for (int i = 0; i < gridWidth; i++)
+            {
+                if (xpos >= 0 + (i * 60 + 10) && xpos < 60 + (i * 60 + 10))
+                {
+                    xgrid = i;
+                    break;
+                }
+                else xgrid = gridWidth;
+            }
+            return xgrid;
+        }
+
+
+        private bool isHitOnX()
+        {
+
+            for (int i = 0; i < gridHeight; i++)
+            {
+                if (obstacles[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][i] != 0)
+                    return true;
+            }
+            return false;
+        }
+
+        private int YGridPosition()
+        {
+            int intToReturn = 0;
+            for (int i = 0; i < gridHeight; i++)
+            {
+
+                if (obstacles[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][i] != 0)
+                    intToReturn = i;
+            }
+            return intToReturn;
+        }
+
+        private int MapYGridPosition(int yPos)
+        {
+            switch (yPos)
+            {
+                case 0:
+                    yPos = 2;
+                    break;
+                case 1:
+                    yPos = 1;
+                    break;
+                case 2:
+                    yPos = 0;
+                    break;
+                default:
+                    yPos = 0;
+                    break;
+            }
+            return (yPos);
+        }
+
+        private int mapYPositionToGrid(int ypos)
+        {
+            int ygrid = 0;
+            for (int i = 0; i < gridHeight; i++)
+            {
+                if (ypos >= 395 && ypos < 455)
+                    ygrid = i;
+                else ygrid = gridHeight;
+            }
+            return ygrid;
+        }
     }
 }

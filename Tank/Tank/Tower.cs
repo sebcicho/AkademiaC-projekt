@@ -20,6 +20,16 @@ namespace Tank
             health = hp;
         }
 
+        public Tower(MainWindow win, int hp, int x, int y)
+        {
+            main = win;
+            health = hp;
+            xGridPosition = x;
+            yGridPosition = y;
+        }
+
+
+
         public void Draw()
         {
             Canvas towerCanvas = new Canvas();

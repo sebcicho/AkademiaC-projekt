@@ -9,11 +9,18 @@ namespace Tank
     class obstacleTypeAndIndicator
     {
         public int type;
-        public int sum;
-        public obstacleTypeAndIndicator(int a1, int a2)
+        public int y;
+        public int x;
+        public obstacleTypeAndIndicator(int a1, int a2, int a3)
         {
             type = a1;
-            sum = a2;
+            x = a2;
+            y = a3;
+        }
+
+        public obstacleTypeAndIndicator(int a1)
+        {
+            type = a1;
         }
     };
 }

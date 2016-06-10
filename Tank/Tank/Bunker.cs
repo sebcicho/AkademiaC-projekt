@@ -18,8 +18,17 @@ namespace Tank
         {
             main = win;
             health = hp;
+
         }
 
+
+        public Bunker(MainWindow win, int hp, int x, int y)
+        {
+            main = win;
+            health = hp;
+            xGridPosition = x;
+            yGridPosition = y;
+        }
         public void Draw()
         {
             Canvas bunkerCanvas = new Canvas();
@@ -45,7 +54,7 @@ namespace Tank
 
             main.obstacleCanvas.Children.Add(bunkerCanvas);
             Canvas.SetTop(bunkerCanvas, YPosition);
-            Canvas.SetLeft(bunkerCanvas, XPosition+3);
+            Canvas.SetLeft(bunkerCanvas, XPosition + 3);
             // GetChildren(main.myGrid,YPosition,XPosition).
 
         }
