@@ -14,9 +14,10 @@ namespace Tank
         private MainWindow main;
 
 
-        public EnemyTank(MainWindow win)
+        public EnemyTank(MainWindow win, int hp)
         {
             main = win;
+            health = hp;
         }
 
         public void Draw()

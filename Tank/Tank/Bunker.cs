@@ -14,9 +14,10 @@ namespace Tank
         private MainWindow main;
 
 
-        public Bunker(MainWindow win)
+        public Bunker(MainWindow win, int hp)
         {
             main = win;
+            health = hp;
         }
 
         public void Draw()

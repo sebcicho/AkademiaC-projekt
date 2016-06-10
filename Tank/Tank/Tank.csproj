@@ -57,6 +57,7 @@
     </ApplicationDefinition>
     <Compile Include="Bunker.cs" />
     <Compile Include="EnemyTank.cs" />
+    <Compile Include="obstacleTypeAndIndicator.cs" />
     <Compile Include="Tower.cs" />
     <Compile Include="Trash.cs" />
     <Page Include="MainWindow.xaml">

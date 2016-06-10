@@ -14,9 +14,10 @@ namespace Tank
         private MainWindow main;
 
 
-        public Tower(MainWindow win)
+        public Tower(MainWindow win ,int hp)
         {
             main = win;
+            health = hp;
         }
 
         public void Draw()
@@ -41,12 +42,12 @@ namespace Tank
             turret.Fill = new SolidColorBrush(Colors.Violet);
 
             Rectangle gun1 = new Rectangle();
-            gun1.Height = 20;
+            gun1.Height = 23;
             gun1.Width = 5;
             gun1.Fill = new SolidColorBrush(Colors.Violet);
 
             Rectangle gun2 = new Rectangle();
-            gun2.Height = 20;
+            gun2.Height = 23;
             gun2.Width = 5;
             gun2.Fill = new SolidColorBrush(Colors.Violet);
 

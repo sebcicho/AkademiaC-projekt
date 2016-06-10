@@ -15,9 +15,10 @@ namespace Tank
         private MainWindow main;
 
         
-        public Trash(MainWindow win)
+        public Trash(MainWindow win, int hp)
         {
             main = win;
+            health = hp;
         }
 
         public void Draw()
