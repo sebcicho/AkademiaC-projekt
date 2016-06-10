@@ -55,11 +55,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Bunker.cs" />
+    <Compile Include="EnemyTank.cs" />
+    <Compile Include="Tower.cs" />
+    <Compile Include="Trash.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Ammo.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -70,6 +73,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Obstackle.cs" />
     <Compile Include="Params.cs" />
     <Compile Include="PlayerTank.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
