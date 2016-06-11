@@ -60,9 +60,9 @@ namespace Tank
         public static int gridHeight = 3;
         public static int gridWidth = 9;
         public static int levelNumber = 5;
-        public static int bunkerHealingTime = 1000;
-        public static int towerSalvoTime = 1000;
-        public static int tankShootTime = 1000;
+        public static int bunkerHealingTime = 100;
+        public static int towerSalvoTime = 100;
+        public static int tankShootTime = 100;
         public static int enemyTankDamage = 25;
         public static int enemyShootRange = 470;
         public static int obstaclesFirstHeighOffset = 455;
@@ -326,7 +326,6 @@ namespace Tank
                                     checkSum++;
                                 break;
                         }
-
                     }
                     if (checkSum == 0)
                         obstacles[i][j][0] = 1;
@@ -335,7 +334,6 @@ namespace Tank
         }
         private void LevelDraw(int level)
         {
-
             Rectangle blank = new Rectangle();
             blank.Height = 200;
             blank.Width = 600;
@@ -733,9 +731,6 @@ namespace Tank
         {
             int sum = 0;
             sum = towersAliveCounter + tanksAliveCounter + trashesAliveCounter + bunkersAliveCounter;
-            Debug.WriteLine("sum= "+sum);
-            Debug.WriteLine("towersAliveCounter= " + towersAliveCounter + " tanksAliveCounter= " + tanksAliveCounter + " trashesAliveCounter= " + trashesAliveCounter + " bunkersAliveCounter= " + bunkersAliveCounter);
-            Debug.WriteLine("_______________________________________");
             if (sum == 0)
                 return true;
             else
