@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -56,10 +57,17 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Bunker.cs" />
+    <Compile Include="Defeat.xaml.cs">
+      <DependentUpon>Defeat.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EnemyTank.cs" />
     <Compile Include="obstacleTypeAndIndicator.cs" />
     <Compile Include="Tower.cs" />
     <Compile Include="Trash.cs" />
+    <Page Include="Defeat.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

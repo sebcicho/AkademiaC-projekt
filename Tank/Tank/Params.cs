@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 namespace Tank
 {
-     class Params : INotifyPropertyChanged
+    public class Params : INotifyPropertyChanged
     {
         private int gameLevel;
         private int gamePoints;
