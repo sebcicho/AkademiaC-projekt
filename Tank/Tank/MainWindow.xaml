@@ -27,26 +27,8 @@
         <Line X1="0" X2="600" Y1="80" Y2="80" StrokeThickness="5" Stroke="WhiteSmoke"></Line>
 
         <Rectangle  Name="PlayerAmmo" Canvas.ZIndex="2" Height="5" Width="4" Fill="White"  Opacity="{Binding ShootVisible}" Canvas.Bottom="{Binding YShootPosition}" Canvas.Left="{Binding XShootPosition}"></Rectangle>
-      <!--  <Grid Canvas.Top="85" Name="myGrid">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="60" />
-                <RowDefinition Height="60" />
-                <RowDefinition Height="60" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="60" />
-                <ColumnDefinition Width="60" />
-                <ColumnDefinition Width="60" />
-                <ColumnDefinition Width="60" />
-                <ColumnDefinition Width="60" />
-                <ColumnDefinition Width="60" />
-                <ColumnDefinition Width="60" />
-                <ColumnDefinition Width="60" />
-                <ColumnDefinition Width="60" />
-                <ColumnDefinition Width="60" />
-            </Grid.ColumnDefinitions>
-        </Grid>-->
-        <Canvas Canvas.Top="85" Canvas.ZIndex="1" Name="obstacleCanvas" Height="120" Width="600">
+
+        <Canvas Canvas.Top="85" Canvas.ZIndex="1" Name="obstacleCanvas" Height="500" Width="600">
             
         </Canvas>
         <Canvas Height="60" Width="60"  Name="PlayerTankObject" Background="black" Canvas.Bottom="0" Canvas.Top="540" Canvas.Left="{Binding XPosition}">
