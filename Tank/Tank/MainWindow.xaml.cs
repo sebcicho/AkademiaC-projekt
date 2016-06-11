@@ -31,6 +31,8 @@ namespace Tank
         private int tankSpeed = 10;
         private int ticPrescaler = 0;
         private int ticMultiplier = 2;
+        private int bunkerHealingIterator = 0;
+        private int towerSalvoIterator = 0;
 
         private List<List<List<int>>> obstacles = new List<List<List<int>>>();
         private List<List<List<Trash>>> trashes = new List<List<List<Trash>>>();
@@ -47,7 +49,8 @@ namespace Tank
         public static int gridHeight = 3;
         public static int gridWidth = 9;
         public static int levelNumber = 5;
-
+        public static int bunkerHealingTime = 1000;
+        public static int towerSalvoTime = 1000;
         public static int obstaclesFirstHeighOffset = 455;
         public static int obstaclesWidthOffset = 10;
 
@@ -72,8 +75,9 @@ namespace Tank
             InitializeComponent();
             LevelInit(levelNumber);
 
-            LevelDraw(4);
+
             gameParams.level = 5;
+            LevelDraw(4);
             //------------------------------------------------------
             PlayerTankObject.DataContext = playerTank;
             Level.DataContext = gameParams;
@@ -91,7 +95,8 @@ namespace Tank
         }
         void timerTick(object sender, EventArgs e)
         {
-
+            bunkerHealingIterator++;
+            towerSalvoIterator++;
             ticPrescaler++;
             if (ticPrescaler > ticPrescalerMax)
             {
@@ -105,6 +110,17 @@ namespace Tank
                         gameParams.reload = barsLength;
                 }
             }
+            if (bunkerHealingIterator == bunkerHealingTime)
+            {
+                bunkerHealingIterator = 0;
+                bunkerHealing();
+            }
+            if (towerSalvoIterator == towerSalvoTime)
+            {
+                towerSalvoIterator = 0;
+                towerSalvo();
+            }
+
 
             playerShoot();
 
@@ -208,6 +224,15 @@ namespace Tank
         }
         private void LevelDraw(int level)
         {
+
+            Rectangle blank = new Rectangle();
+            blank.Height = 200;
+            blank.Width = 600;
+            blank.Fill = new SolidColorBrush(Colors.Black);
+
+            this.obstacleCanvas.Children.Add(blank);
+            Canvas.SetTop(blank, 0);
+            Canvas.SetLeft(blank, 0);
             for (int j = 0; j < obstacles[level].Count; j++)
             {
                 for (int k = 0; k < obstacles[level][j].Count; k++)
@@ -265,7 +290,6 @@ namespace Tank
                             tanks[level][j].Add(new EnemyTank(this, 0, j, k));
                             bunkers[level][j].Add(new Bunker(this, 0, j, k));
                             break;
-
                     }
                 }
             }
@@ -277,10 +301,6 @@ namespace Tank
             bool hitX = false;
             int yBoom = 0;
 
-            Rectangle blank = new Rectangle();
-            blank.Height = 60;
-            blank.Width = 60;
-            blank.Fill = new SolidColorBrush(Colors.Black);
 
             if (playerTank.shootFired == true)
             {
@@ -299,17 +319,12 @@ namespace Tank
                     //     Debug.WriteLine((YGridPosition() * 60 - 50).ToString());
                     if (playerTank.YShootPosition >= yBoom)
                     {
-                        //dziala tu jest wyjebywanie do napisania
-
                         switch (obstacles[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()])
                         {
                             case (int)obstaclesTypes.trash:
                                 trashes[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()].health--;
                                 if (trashes[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()].health == 0)
                                 {
-                                    this.obstacleCanvas.Children.Add(blank);
-                                    Canvas.SetTop(blank, YGridPosition() * 60 + 10);
-                                    Canvas.SetLeft(blank, mapXPositionToGrid(playerTank.XShootPosition) * 60 + 10);
                                     obstacles[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()] = 0;
                                 }
                                 break;
@@ -317,9 +332,6 @@ namespace Tank
                                 tanks[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()].health--;
                                 if (tanks[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()].health == 0)
                                 {
-                                    this.obstacleCanvas.Children.Add(blank);
-                                    Canvas.SetTop(blank, YGridPosition() * 60 + 10);
-                                    Canvas.SetLeft(blank, mapXPositionToGrid(playerTank.XShootPosition) * 60 + 10);
                                     obstacles[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()] = 0;
                                 }
                                 break;
@@ -327,9 +339,6 @@ namespace Tank
                                 bunkers[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()].health--;
                                 if (bunkers[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()].health == 0)
                                 {
-                                    this.obstacleCanvas.Children.Add(blank);
-                                    Canvas.SetTop(blank, YGridPosition() * 60 + 10);
-                                    Canvas.SetLeft(blank, mapXPositionToGrid(playerTank.XShootPosition) * 60 + 10);
                                     obstacles[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()] = 0;
                                 }
                                 break;
@@ -337,23 +346,16 @@ namespace Tank
                                 towers[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()].health--;
                                 if (towers[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()].health == 0)
                                 {
-                                    this.obstacleCanvas.Children.Add(blank);
-                                    Canvas.SetTop(blank, YGridPosition() * 60 + 10);
-                                    Canvas.SetLeft(blank, mapXPositionToGrid(playerTank.XShootPosition) * 60 + 10);
                                     obstacles[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()] = 0;
                                 }
                                 break;
-
-
-
-
                         }
-
 
                         playerTank.shootFired = false;
                         playerTank.XShootPosition = 0;
                         playerTank.YShootPosition = playerTankEndPosition;
                         playerTank.ShootVisible = 0;
+                        LevelDraw(gameParams.level - 1);
                     }
                 }
 
@@ -388,8 +390,11 @@ namespace Tank
 
             for (int i = 0; i < gridHeight; i++)
             {
-                if (obstacles[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][i] != 0)
-                    return true;
+                if (mapXPositionToGrid(playerTank.XShootPosition) != gridWidth)
+                {
+                    if (obstacles[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][i] != 0)
+                        return true;
+                }
             }
             return false;
         }
@@ -399,43 +404,47 @@ namespace Tank
             int intToReturn = 0;
             for (int i = 0; i < gridHeight; i++)
             {
-
                 if (obstacles[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][i] != 0)
                     intToReturn = i;
             }
             return intToReturn;
         }
 
-        private int MapYGridPosition(int yPos)
+        private void bunkerHealing()
         {
-            switch (yPos)
+            int i = 0;
+            foreach (var subcollection in bunkers[gameParams.level - 1])
             {
-                case 0:
-                    yPos = 2;
-                    break;
-                case 1:
-                    yPos = 1;
-                    break;
-                case 2:
-                    yPos = 0;
-                    break;
-                default:
-                    yPos = 0;
-                    break;
+                foreach (var bunker in bunkers[gameParams.level - 1][i])
+                {
+                    if (bunker.health != 0 && bunker.health != 3)
+                    {
+                        bunker.health++;
+                    }
+                }
+                i++;
             }
-            return (yPos);
         }
 
-        private int mapYPositionToGrid(int ypos)
+        private void towerSalvo()
         {
-            int ygrid = 0;
-            for (int i = 0; i < gridHeight; i++)
+            int i = 0;
+            foreach (var subcollection in towers[gameParams.level - 1])
             {
-                if (ypos >= 395 && ypos < 455)
-                    ygrid = i;
-                else ygrid = gridHeight;
+                foreach (var tower in towers[gameParams.level - 1][i])
+                {
+                    if (tower.health != 0 && gameParams.health != 0)
+                    {   
+                        gameParams.health = gameParams.health - 10;
+                        if (gameParams.health < 0)
+                            gameParams.health = 0;
+                    }
+                }
+                i++;
             }
-            return ygrid;
+
         }
+
+
     }
 }
