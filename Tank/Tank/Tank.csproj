@@ -61,10 +61,20 @@
       <DependentUpon>Defeat.xaml</DependentUpon>
     </Compile>
     <Compile Include="EnemyTank.cs" />
+    <Compile Include="InfoWindow.xaml.cs">
+      <DependentUpon>InfoWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="obstacleTypeAndIndicator.cs" />
     <Compile Include="Tower.cs" />
     <Compile Include="Trash.cs" />
+    <Compile Include="WinWindow.xaml.cs">
+      <DependentUpon>WinWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Defeat.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InfoWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -80,6 +90,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="WinWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Obstackle.cs" />

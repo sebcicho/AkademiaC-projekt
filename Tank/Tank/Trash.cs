@@ -39,8 +39,6 @@ namespace Tank
             Canvas.SetTop(rect,YPosition + 5);
             Canvas.SetLeft(rect, XPosition + 5);
 
-            // GetChildren(main.myGrid,YPosition,XPosition).
-
         }
 
     }

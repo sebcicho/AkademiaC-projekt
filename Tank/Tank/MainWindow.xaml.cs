@@ -59,7 +59,7 @@ namespace Tank
         public static int ammoVelocity = 10; //added with every tick to y shoot position
         public static int gridHeight = 3;
         public static int gridWidth = 9;
-        public static int levelNumber = 5;
+        public static int levelNumber = 10;
         public static int bunkerHealingTime = 100;
         public static int towerSalvoTime = 100;
         public static int tankShootTime = 100;
@@ -97,8 +97,10 @@ namespace Tank
             InitializeComponent();
             LevelInit(levelNumber);
 
+
             LevelDraw(0);
             updateAlive();
+
             //------------------------------------------------------
             PlayerTankObject.DataContext = playerTank;
             Level.DataContext = gameParams;
@@ -183,7 +185,6 @@ namespace Tank
                             }
                         }
                     }
-
                     enemyShootStateHolder = (int)enemyTankShellState.initState;
                     this.obstacleCanvas.Children.Remove(enemyShootsList[enemyShootCount - 1]);
                 }
@@ -195,10 +196,8 @@ namespace Tank
         }
         void timerTick(object sender, EventArgs e)
         {
-
             bunkerHealingIterator++;
             towerSalvoIterator++;
-
             ticPrescaler++;
 
             Tower tempTower = new Tower(this, 0);
@@ -244,8 +243,6 @@ namespace Tank
             if (Keyboard.IsKeyDown(Key.D))
                 playerTank.XPosition += tankSpeed;
             if (Keyboard.IsKeyDown(Key.W))
-                gameParams.level++;
-            if (Keyboard.IsKeyDown(Key.Space))
             {
                 if (gameParams.reload >= barsLength && playerTank.shootFired == false)
                 {
@@ -723,7 +720,9 @@ namespace Tank
             }
             else
             {
-                //win
+                WinWindow wWindow = new WinWindow(this);
+                wWindow.Show();
+
             }
         }
 
@@ -737,5 +736,10 @@ namespace Tank
                 return false;
         }
 
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            InfoWindow infoWindow = new InfoWindow();
+            infoWindow.Show();
+        }
     }
 }

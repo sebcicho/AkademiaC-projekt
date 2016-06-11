@@ -1,0 +1,18 @@
+﻿<Window x:Class="Tank.WinWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Tank"
+        mc:Ignorable="d"
+        Title="WinWindow" Height="100" Width="200">
+
+    <Canvas  Name="MainCanvas" Background="black" Margin="0,0,-0.4,0.4">
+        <Label x:Name="label" Content="WIN!" Height="26" Width="194" Foreground="Azure" HorizontalContentAlignment="Center"/>
+        <Button Name="accept" Content="close" Height="20" Width="60" Canvas.Bottom="10" Canvas.Left="20" Click="accept_Click"/>
+        <Button Name="restart" Content="restart" Height="20" Width="60" Canvas.Bottom="10" Canvas.Right="20" Click="restart_Click" />
+
+        <Label Name="PointsLabel" Canvas.Top="7" Canvas.Right="50" Content="Points:" Foreground="White" FontSize="10" Canvas.Left="129"></Label>
+        <Label Name="Points" Canvas.Top="7" Canvas.Right="5" Content="{Binding points}" Foreground="White" FontSize="10"/>
+    </Canvas>
+</Window>
