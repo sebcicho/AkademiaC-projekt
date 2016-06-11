@@ -61,8 +61,8 @@ namespace Tank
         public static int gridWidth = 9;
         public static int levelNumber = 5;
         public static int bunkerHealingTime = 1000;
-        public static int towerSalvoTime = 100;
-        public static int tankShootTime = 100;
+        public static int towerSalvoTime = 1000;
+        public static int tankShootTime = 1000;
         public static int enemyTankDamage = 25;
         public static int enemyShootRange = 470;
         public static int obstaclesFirstHeighOffset = 455;
@@ -96,8 +96,8 @@ namespace Tank
         {
             InitializeComponent();
             LevelInit(levelNumber);
-            gameParams.level = 5;
-            LevelDraw(4);
+
+            LevelDraw(0);
             updateAlive();
             //------------------------------------------------------
             PlayerTankObject.DataContext = playerTank;
@@ -175,7 +175,7 @@ namespace Tank
                         {
                             gameParams.health = 0;
                             if (defeat == false)
-                            {                            
+                            {
                                 defeat = true;
                                 Defeat wind = new Defeat(this);
                                 this.IsEnabled = false;
@@ -445,6 +445,9 @@ namespace Tank
                                     Canvas.SetLeft(blank, mapXPositionToGrid(playerTank.XShootPosition) * 60 + 10);
                                     obstacles[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()] = 0;
                                     gameParams.points += (int)obstaclesTypes.trash;
+                                    trashesAliveCounter--;
+                                    if (checkWin())
+                                        increaseLevel();
                                 }
                                 break;
                             case (int)obstaclesTypes.tank:
@@ -457,6 +460,8 @@ namespace Tank
                                     obstacles[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()] = 0;
                                     tanksAliveCounter--;
                                     gameParams.points += (int)obstaclesTypes.tank;
+                                    if (checkWin())
+                                        increaseLevel();
                                 }
                                 break;
                             case (int)obstaclesTypes.bunker:
@@ -469,6 +474,8 @@ namespace Tank
                                     obstacles[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()] = 0;
                                     bunkersAliveCounter--;
                                     gameParams.points += (int)obstaclesTypes.bunker;
+                                    if (checkWin())
+                                        increaseLevel();
                                 }
                                 break;
                             case (int)obstaclesTypes.tower:
@@ -481,6 +488,8 @@ namespace Tank
                                     obstacles[gameParams.level - 1][mapXPositionToGrid(playerTank.XShootPosition)][YGridPosition()] = 0;
                                     towersAliveCounter--;
                                     gameParams.points += (int)obstaclesTypes.tower;
+                                    if (checkWin())
+                                        increaseLevel();
                                 }
                                 break;
                         }
@@ -582,7 +591,7 @@ namespace Tank
             EnemyTank temp = new EnemyTank(this, 0, 20, 20);
 
             tankChosen = rdn.Next(0, tanksAliveCounter);
-            Debug.WriteLine("tanksAlive: " + tanksAliveCounter.ToString());
+          //  Debug.WriteLine("tanksAlive: " + tanksAliveCounter.ToString());
             foreach (var subcollection in tanks[gameParams.level - 1])
             {
                 foreach (var tank in subcollection)
@@ -686,7 +695,7 @@ namespace Tank
                 }
             }
 
-            foreach (var subcollection in towers[gameParams.level - 1])
+            foreach (var subcollection in bunkers[gameParams.level - 1])
             {
                 foreach (var bunker in subcollection)
                 {
@@ -705,9 +714,32 @@ namespace Tank
             }
         }
 
-        void resetLevel()
+        void increaseLevel()
         {
+            if (gameParams.level != levelNumber)
+            {
+                LevelDraw(gameParams.level);
+                gameParams.level++;
+                gameParams.health = 150;
+                updateAlive();
+            }
+            else
+            {
+                //win
+            }
+        }
 
+        bool checkWin()
+        {
+            int sum = 0;
+            sum = towersAliveCounter + tanksAliveCounter + trashesAliveCounter + bunkersAliveCounter;
+            Debug.WriteLine("sum= "+sum);
+            Debug.WriteLine("towersAliveCounter= " + towersAliveCounter + " tanksAliveCounter= " + tanksAliveCounter + " trashesAliveCounter= " + trashesAliveCounter + " bunkersAliveCounter= " + bunkersAliveCounter);
+            Debug.WriteLine("_______________________________________");
+            if (sum == 0)
+                return true;
+            else
+                return false;
         }
 
     }
