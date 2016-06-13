@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Tank"
         mc:Ignorable="d"
         KeyDown="MainWindow_OnKeyDown"
-        Title="MainWindow" Height="630 " Width="600">
+        Title="TANK" Height="630 " Width="600">
     <Canvas Height="600" Width="600"  Name="MainCanvas" Background="black">
         <Label Name="HealthLabel" Canvas.Top="10" Canvas.Left="10" Content="Health" Foreground="White" FontSize="16"></Label>
         <Label Name="ReloadLabel" Canvas.Top="35" Canvas.Left="10" Content="Reload" Foreground="White" FontSize="16"></Label>

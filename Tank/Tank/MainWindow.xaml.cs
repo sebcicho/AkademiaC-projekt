@@ -60,8 +60,8 @@ namespace Tank
         public static int gridHeight = 3;
         public static int gridWidth = 9;
         public static int levelNumber = 10;
-        public static int bunkerHealingTime = 100;
-        public static int towerSalvoTime = 100;
+        public static int bunkerHealingTime = 300;
+        public static int towerSalvoTime = 300;
         public static int tankShootTime = 100;
         public static int enemyTankDamage = 25;
         public static int enemyShootRange = 470;
@@ -97,7 +97,8 @@ namespace Tank
             InitializeComponent();
             LevelInit(levelNumber);
 
-
+            //      gameParams.level = 5;
+            //    LevelDraw(4);
             LevelDraw(0);
             updateAlive();
 
@@ -119,7 +120,7 @@ namespace Tank
             timer2.Interval = TimeSpan.FromMilliseconds(10);
             timer2.Start();
             timer2.Tick += timerTick2;
-
+             
 
 
         }
@@ -196,8 +197,8 @@ namespace Tank
         }
         void timerTick(object sender, EventArgs e)
         {
-            bunkerHealingIterator++;
-            towerSalvoIterator++;
+
+            
             ticPrescaler++;
 
             Tower tempTower = new Tower(this, 0);
@@ -216,6 +217,7 @@ namespace Tank
             }
             if (bunkersAliveCounter != 0)
             {
+                bunkerHealingIterator++;
                 if (bunkerHealingIterator == bunkerHealingTime)
                 {
                     bunkerHealingIterator = 0;
@@ -225,6 +227,7 @@ namespace Tank
             }
             if (towersAliveCounter != 0)
             {
+                towerSalvoIterator++;
                 if (towerSalvoIterator == towerSalvoTime)
                 {
                     towerSalvoIterator = 0;
